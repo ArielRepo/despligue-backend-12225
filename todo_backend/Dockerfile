@@ -12,11 +12,11 @@ COPY ./src/package-lock.json /app/package-lock.json
 
 RUN npm install --save-dev prisma @prisma/client
 
-RUN npm i -g nodemon
+RUN npm i -g express cors
 
 # Esto sirve mas que nada para produccion, para desarrollo es mejor usar volumes, declarado en el compose
 # COPY ./src /app
 
 EXPOSE 5000
 
-CMD ["nodemon", "src/index.js"]
+CMD ["node", "src/index.js"]
