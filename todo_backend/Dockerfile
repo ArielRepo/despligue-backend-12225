@@ -7,10 +7,12 @@ RUN npm cache clean --force
 WORKDIR /app
 
 # Copia package.json y package-lock.json desde src/
-COPY ./package.json /app/package.json
-COPY ./package-lock.json /app/package-lock.json
+COPY ./src/package.json /app/package.json
+COPY ./src/package-lock.json /app/package-lock.json
 
 RUN npm install --save-dev prisma @prisma/client
+
+COPY ./src /app/src
 
 RUN npm i -g express cors
 
