@@ -1,28 +1,21 @@
-name: DeployPagina
+name: Despliegue
 
 on:
-    push:
-        branches:
-        - main
-    jobs:
-      build:
-        runs-on: ubuntu-latest
-        steps:
-          # -   name: Checkout
-          #     uses: actions/chechout@v4
-          # -   name: Setup Node
-          #     uses: actions/setup-node@v4
-          #     with:
-          #       node-version: 'latest'
-          # -   name: Install dependencies
-          #     run: cd front && npm install
-          #     name: Build
-          #     run: cd front && npm run build
-          # env:
-          #     VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL}}
+  push:
+    branches:
+      - main
 
-          -   name: Desploy
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./todo_frontend/pages
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Paso importante, es como un git clone esta parte
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./todo_frontend/pages
