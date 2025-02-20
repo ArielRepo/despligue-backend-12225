@@ -17,6 +17,7 @@ app.use('/api/authors', authorsRouter);
 app.use('/api/loans', loansRouter);
 
 app.get('/', (req, res) => {
+    console.log("Linea debugging");
     res.send('Funca :)');
 })
 
