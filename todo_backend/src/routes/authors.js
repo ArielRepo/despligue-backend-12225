@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const router = express.Router();
 const prisma = new PrismaClient();
 
+//  ------- ENDPOINTS --------
 router.get('/', async (req, res) => {
     const authors = await prisma.author.findMany({
         include: { books: true },
@@ -30,7 +31,7 @@ router.post('/', async (req, res) => {
         data: {
             name: req.body.name ?? 'Desconocido',
             nationality: req.body.nationality ?? 'Desconocida',
-            born_date: req.body.born_date ?? '2000-01-01T00:00:00Z',
+            born_date: req.body.born_date ?? 'Sin fecha',
             biography: req.body.biography ?? 'Sin información',
             stock_books: req.body.stock_books ?? 0,
         },
@@ -66,23 +67,27 @@ router.patch('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-    const author = await prisma.author.findUnique({
-        where: {
-            id: parseInt(req.params.id),
-        },
-    });
-    if (author === null) {
-        res.sendStatus(404);
-        return;
+    try {
+      const authorId = parseInt(req.params.id);
+      const author = await prisma.author.findUnique({
+        where: { id: authorId },
+      });
+      if (!author) {
+        return res.sendStatus(404);
+      }
+      
+      await prisma.author.delete({
+        where: { id: authorId },
+      });
+      
+      res.json(author);
+    } catch (error) {
+      console.error("Error al eliminar el autor :", error);
+      res.status(400).json({
+        error: "No se puede eliminar ese registro, porque de ese registro depende algún préstamo o algún libro"
+      });
     }
-
-    await prisma.author.delete({
-        where: {
-            id: author.id,
-        },
-    });
-
-    res.json(author);
-});
+  });
+  
 
 export default router;
