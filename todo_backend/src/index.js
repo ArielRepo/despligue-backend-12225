@@ -5,7 +5,13 @@ import authorsRouter from './routes/authors.js';
 import loansRouter from './routes/loans.js';
 
 const app = express();
-const PORT = process.env.BACKEND_PORT ?? 3000;
+const PORT = process.env.PORT || 3000;
+
+//  CSP
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self';");
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,10 +23,8 @@ app.use('/api/authors', authorsRouter);
 app.use('/api/loans', loansRouter);
 
 app.get('/', (req, res) => {
-    console.log("Linea debugging");
     res.send('Funca :)');
-})
-
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
