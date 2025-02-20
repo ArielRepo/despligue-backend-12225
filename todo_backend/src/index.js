@@ -15,7 +15,10 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: 'https://arielrepo.github.io/despligue-backend-12225/', // Aquí va tu URL de frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 app.options('*', cors());
 
 app.use('/api/books', booksRouter);
