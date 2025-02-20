@@ -16,7 +16,7 @@ COPY ./src /app/src
 
 RUN npm i -g express cors
 
-RUN cd /app/prisma && npx prisma generate
+RUN cd /app/src/prisma && npx prisma generate
 
 EXPOSE 5000
 
